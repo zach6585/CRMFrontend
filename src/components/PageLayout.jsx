@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { SignInButton } from "./SignInButton";
@@ -9,8 +9,16 @@ import { revertSearchedCustomers } from '../actions/customer.js';
 import { deleteErrors } from "../actions/error";
 import { useDispatch, useSelector } from 'react-redux';
 import { useMsal } from "@azure/msal-react";
+// import { loginRequest } from "../authConfig";
+// import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { getRoleFromToken } from '../utils/tokenUtils';
+
+import './components.scss';
+
+import logo from "./Logo.png";
 /**
  * Renders the header with a sign in/out button as well as all of the page links
  */
@@ -20,23 +28,18 @@ export const PageLayout = (props) => {
 
     const error = useSelector((state) => state.errors.error); //This is our errors. We have this so that in the case of a 500 or 404 error, we can render a new page, and in the case of a 406, we just show the message
 
-    const userIsInSystemRef = useRef(false); // Even if the user has an account within the allowances of what we have for microsoft, we will use this to determine if they are valid (as in they are saved to the database). If not, we won't render anything
-
     const isAuthenticated = useIsAuthenticated();
     //The eslint thing is here since we don't need instance and I don't want the whole warning thing
     //eslint-disable-next-line
     const { instance, accounts } = useMsal();
 
+    const [userRole, setUserRole] = useState(null); // New state for holding the role of the user
+
     useEffect(() => {
-        //This useEffect's purpose is to determine if the user with the username of the person signing in is valid
-        if (workers.workers.length !== 0 && accounts.length !== 0 && Object.keys(workers.current_worker).length === 0) {
-            const findWorker = workers.workers.filter(worker => worker.email === accounts[0].username)
-            if (findWorker.length !== 0) {
-                userIsInSystemRef.current = true;
-                dispatch(setCurrentWorker(findWorker[0]))
-            }
-        }
-    }, [accounts, workers, dispatch])
+        //This is getting the userRole from the given token
+        const role = getRoleFromToken(instance, accounts);
+        setUserRole(role);
+    }, [instance, accounts]);
 
 
 
@@ -59,6 +62,33 @@ export const PageLayout = (props) => {
         }
     }, [error, dispatch])
 
+    useEffect(() => {
+        //This useEffect's purpose is to determine if the user with the username of the person signing in is valid
+        if (workers.workers.length !== 0 && accounts.length !== 0 && Object.keys(workers.current_worker).length === 0) {
+            const findWorker = workers.workers.filter(worker => worker.email === accounts[0].username)
+            if (findWorker.length !== 0) {
+                dispatch(setCurrentWorker(findWorker[0]))
+            }
+        }
+    }, [accounts, workers, dispatch])
+
+    // useEffect(() => {
+    //     // Fetch access token so that we can get our group data. 
+    //     if (isAuthenticated && accounts.length > 0) {
+    //         instance.acquireTokenSilent({
+    //             ...loginRequest,
+    //             account: accounts[0]
+    //         }).then((response) => {
+    //             dispatch(getGroupList(response.accessToken))
+    //         }).catch(error => {
+    //             if (error instanceof InteractionRequiredAuthError) {
+    //                 // fallback to interaction when silent call fails
+    //                 instance.acquireTokenRedirect(loginRequest);
+    //             }
+    //         });
+    //     }
+    // }, [isAuthenticated, instance, accounts, dispatch]);
+
     const resetSearch = (e) => {
         dispatch(revertSearchedCustomers());
     }
@@ -66,25 +96,26 @@ export const PageLayout = (props) => {
     if (Object.keys(error).length === 0 || error.err_code === 406) {
         return (
             <>
-                {isAuthenticated && userIsInSystemRef.current ?
+                {isAuthenticated ?
                     <div>
                         <Navbar >
                             <div className="app_header">
+                                <img src={logo} alt="Company Logo" id="wbw-logo" />
                                 <h3 onClick={e => resetSearch(e)}><Link to="contacts">View All Contacts</Link></h3>
-                                {/* <h3><Link to="calendar">View Calendar</Link></h3> */}
-                                {workers.current_worker.admin === 1 && <h3 onClick={e => resetSearch(e)}><Link to="new_contact">Create a New Contact</Link></h3>}
+                                {userRole === 'CRM.Manage' && <h3 onClick={e => resetSearch(e)}><Link to="new_contact">Create a New Contact</Link></h3>}
                                 <h3 onClick={e => resetSearch(e)}><Link to="search">Search Contacts</Link></h3>
-                                {workers.current_worker.admin === 1 && <h3 onClick={e => resetSearch(e)}><Link to="new_worker">Add a New Worker</Link></h3>}
                                 <h3 id="sign_out_button"><SignOutButton /></h3>
                             </div>
                         </Navbar>
+
                         <Outlet />
+
                         <ToastContainer />
                     </div>
                     :
                     <div>
                         <Navbar bg="primary" variant="dark"><SignInButton /></Navbar>
-                        {userIsInSystemRef.current ? <p>Welcome to the WBW CRM! Please sign in</p> : <p>You are not within this system and as such are not elligible to use this site</p>}
+                        <p>Welcome to the WBW CRM! Please sign in</p>
                     </div>
                 }
                 <br />
@@ -102,4 +133,5 @@ export const PageLayout = (props) => {
         )
     }
 };
+
 
