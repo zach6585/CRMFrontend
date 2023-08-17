@@ -2,7 +2,7 @@ export const msalConfig = {
   auth: {
     clientId: "8e40b944-2233-4387-910b-0372140ba3cf",
     authority: "https://login.microsoftonline.com/b511dfbf-cb79-4dcf-b4a5-f88702c4a412", // This is a URL (e.g. https://login.microsoftonline.com/{your tenant ID})
-    redirectUri: "http://localhost:3000",
+    redirectUri: "https://wbwcrmcpy.azurewebsites.net",
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
