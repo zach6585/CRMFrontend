@@ -1,6 +1,6 @@
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {searchCustomers, revertSearchedCustomers} from '../../actions/customer.js';
+import { searchCustomers, revertSearchedCustomers } from '../../actions/customer.js';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
@@ -11,9 +11,9 @@ import '../components.scss';
 const Search = () => {
     const [customer, setCustomer] = useState(
         {
-         company: "",
-         contact_name: "",
-         category: ""
+            company: "",
+            contact_name: "",
+            category: ""
         });
 
     const [selected, setSelected] = useState({}); //This determines what has and hasn't been selected yet with workers
@@ -29,24 +29,24 @@ const Search = () => {
 
     useEffect(() => {
         //Navigates to the index page on the change of searched_customers
-        if (hasRenderedRef.current === true && customers.search_message === null && customers.searched === true){
+        if (hasRenderedRef.current === true && customers.search_message === null && customers.searched === true) {
             navigate("/contacts");
         };
-        
+
     }, [customers, navigate, dispatch]);
-   
+
     const handleSubmit = (e) => {
         //Handles submitting the form
         e.preventDefault();
         dispatch(revertSearchedCustomers());
         hasRenderedRef.current = true;
         dispatch(searchCustomers(customer, selected, workerCustomers.worker_customers))
-        
+
     }
 
     const handleCategoryChange = (e) => {
         //Handle change for the category component
-       setCustomer(oldState => ({ ...oldState, category: e.target.value}));
+        setCustomer(oldState => ({ ...oldState, category: e.target.value }));
     }
 
     const handleSelect = (e) => {
@@ -56,40 +56,40 @@ const Search = () => {
 
     const autoSearchItemsMaker = (tag) => {
         return tag === "company" ? customers.customers.map(customer => customer.company)
-        : 
-        customers.customers.map(customer => customer.contact_name)
+            :
+            customers.customers.map(customer => customer.contact_name)
     }
 
-    return(
+    return (
         <>
             <h1 id="search-title">Search</h1>
             <form id="customer_form" onSubmit={handleSubmit} className='search-form'>
                 <div className='search-form__group'>
-                    <AutoCompleteSearch className="custom-select" title={"Company"} key_name={"company"} customers={autoSearchItemsMaker("company")} setCustomer={setCustomer} />
-                    <AutoCompleteSearch className="custom-select" title={"Contact"} key_name={"contact_name"} customers={autoSearchItemsMaker("contact_name")} setCustomer={setCustomer} />
+                    <AutoCompleteSearch className="custom-select" title={"Company Name"} key_name={"company"} customers={autoSearchItemsMaker("company")} setCustomer={setCustomer} />
+                    <AutoCompleteSearch className="custom-select" title={"Contact Name"} key_name={"contact_name"} customers={autoSearchItemsMaker("contact_name")} setCustomer={setCustomer} />
                 </div>
                 <div className='search-form__group'>
                     <label>
-                        Category: 
-                        <select id="category"onChange={e => handleCategoryChange(e)} defaultValue={'Default'}>
+                        Category:
+                        <select id="category" onChange={e => handleCategoryChange(e)} defaultValue={'Default'}>
                             <option value="Default"> -- no choice -- </option>
-                            <option value="EU">EU</option>
-                            <option value="REB">REB</option>
-                            <option value="A&D">A&D</option>
-                            <option value="PMfirm">PMfirm</option>
+                            {/* <option value="EU">EU</option> */}
+                            <option value="REB">Real Estate Broker</option>
+                            <option value="A&D">Architect/Designer</option>
+                            <option value="PMfirm">Project Management Firm</option>
                             <option value="Other">Other</option>
                         </select>
                     </label>
                 </div>
                 <div className='search-form__group'>
                     <label>
-                        WB Wood Owners: 
+                        WB Wood Owners:
                         <div id="select_search">
                             <Select options={search_select_workers} onChange={e => handleSelect(e)} />
                         </div>
                     </label>
                 </div>
-            <button type="submit" onClick={e => handleSubmit(e)} className="search-form__button">Submit</button>
+                <button type="submit" onClick={e => handleSubmit(e)} className="search-form__button">Submit</button>
             </form>
             <h2 className='new_messages'>{customers.search_message}</h2>
         </>

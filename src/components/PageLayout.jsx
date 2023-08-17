@@ -13,15 +13,16 @@ import { useMsal } from "@azure/msal-react";
 // import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import React from "react";
 import { getRoleFromToken } from '../utils/tokenUtils';
-
+import Nav from 'react-bootstrap/Nav';
+// import './PageLayout.css';
 import './components.scss';
-
 import logo from "./Logo.png";
 /**
  * Renders the header with a sign in/out button as well as all of the page links
  */
+
 export const PageLayout = (props) => {
     const dispatch = useDispatch();
     const workers = useSelector((state) => state.workers);
@@ -98,14 +99,23 @@ export const PageLayout = (props) => {
             <>
                 {isAuthenticated ?
                     <div>
-                        <Navbar >
-                            <div className="app_header">
+                        <Navbar className="navbar-custom" expand="lg">
+                            <Navbar.Brand>
                                 <img src={logo} alt="Company Logo" id="wbw-logo" />
-                                <h3 onClick={e => resetSearch(e)}><Link to="contacts">View All Contacts</Link></h3>
-                                {userRole === 'CRM.Manage' && <h3 onClick={e => resetSearch(e)}><Link to="new_contact">Create a New Contact</Link></h3>}
-                                <h3 onClick={e => resetSearch(e)}><Link to="search">Search Contacts</Link></h3>
-                                <h3 id="sign_out_button"><SignOutButton /></h3>
-                            </div>
+                            </Navbar.Brand>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="mr-auto">
+                                    <Nav.Link as={Link} to="contacts" onClick={e => resetSearch(e)}>View All Contacts</Nav.Link>
+                                    {userRole === 'CRM.Manage' && <Nav.Link as={Link} to="new_contact" onClick={e => resetSearch(e)}>Create a New Contact</Nav.Link>}
+                                    <Nav.Link as={Link} to="search" onClick={e => resetSearch(e)}>Search Contacts</Nav.Link>
+                                </Nav>
+                                <Nav>
+                                    <div id="sign_out_button">
+                                        <SignOutButton />
+                                    </div>
+                                </Nav>
+                            </Navbar.Collapse>
                         </Navbar>
 
                         <Outlet />
@@ -114,7 +124,9 @@ export const PageLayout = (props) => {
                     </div>
                     :
                     <div>
-                        <Navbar bg="primary" variant="dark"><SignInButton /></Navbar>
+                        <Navbar bg="primary" variant="dark">
+                            <SignInButton />
+                        </Navbar>
                         <p>Welcome to the WBW CRM! Please sign in</p>
                     </div>
                 }
@@ -133,5 +145,3 @@ export const PageLayout = (props) => {
         )
     }
 };
-
-

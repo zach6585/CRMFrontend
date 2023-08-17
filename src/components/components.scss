@@ -7,6 +7,48 @@
 
 }
 
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 1rem;
+}
+
+.section {
+  flex-basis: calc(33.33% - 1rem);
+  margin-bottom: 1rem;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section {
+    flex-basis: 100%;
+  }
+}
 
 #tableDiv {
   /* This is the main div for the table itself */
@@ -508,7 +550,47 @@ label {
   }
 }
 
+.navbar a {
+  margin-right: 20px;
+  /* Adds space to the right of each link */
+  padding: 10px;
+  /* Adds space around each link */
+}
 
+.navbar-custom {
+  background-color: #3f3b5c;
+  /* wb blue */
+  color: #ffffff;
+  /* white */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
+  position: relative;
+}
+
+.navbar-custom .nav-link {
+  color: #ffffff;
+  /* white */
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-bottom: .5rem;
+  margin-top: 0;
+  font-weight: 600;
+
+}
+
+.navbar-custom .nav-link:hover {
+  color: #cccccc;
+  /* light gray for hover effect */
+
+}
+
+
+/* Custom color for the navbar toggler icon */
+.navbar-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' strokeWidth='2' strokeLinecap='round' strokeMiterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
 
 /* ------------------------------------------------------------------------- */
 
