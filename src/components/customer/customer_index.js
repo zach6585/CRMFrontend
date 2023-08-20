@@ -1,3 +1,5 @@
+// I'll have to come back to this one but I think it's okay as is
+
 import '../components.scss';
 import { lookAtSpecificCustomer } from '../../actions/customer';
 import { useMemo, lazy, Suspense, useRef } from 'react';

@@ -3,12 +3,16 @@ import axios from 'axios';
 export const getCustomers = () => dispatch => {
   //Does exactly what it says it does
   axios.get("https://crmpilot0.azurewebsites.net/customers")
-  .then(response => dispatch({ type: 'GET_ALL_CUSTOMERS', payload: response.data}))
+  .then(response => {
+    dispatch({ type: 'GET_ALL_CUSTOMERS', payload: response.data})
+  }
+    )
   .catch(err => dispatch({type: 'ERROR_CAUGHT', payload: {err_message: err.response.data.message, err_code: err.response.request.status, err_value: err.response.request.statusText}}))
 } 
 
 export const createCustomer = (customer_information, selected_workers) => dispatch => {
   //Does exactly what it says it does
+  console.log(customer_information)
   axios.post("https://crmpilot0.azurewebsites.net/customers", {customer: customer_information, workers: selected_workers})
   .then(response => {
     dispatch({ type: 'CREATE_NEW_CUSTOMER', payload: {customer: response.data.customer[0], workers: selected_workers}}) 
@@ -32,7 +36,7 @@ export const updateNotes = (note_data) => dispatch => {
 
 export const destroyCustomer = (customer_id) => dispatch => {
   //This deletes the customer as well as the worker_customers associated with it
-  
+  //We will also need to destroy the group in Azure associated with it
   axios.post(`https://crmpilot0.azurewebsites.net/customers/destroy`, {id: customer_id})
   .then(() => {
     dispatch({type: 'CUSTOMER_DESTROYED', payload: customer_id});

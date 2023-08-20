@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 import '../components.scss';
 
+import 'react-phone-number-input/style.css';
+// import PhoneInput from 'react-phone-number-input'; //This is how we make the phone number thing look nice
+
 const New = () => {
     const [customer, setCustomer] = useState(
         {
@@ -39,14 +42,16 @@ const New = () => {
     const customers = useSelector((state) => state.customers.customers); //We add this purely so the useEffect where we navigate will be called when a new customer is made!
     const selectedWorker = useSelector((state) => state.workers.current_worker); //We will be using this to determine if the user has a right to access this page
 
-
+    // const [phoneNumber, setPhoneNumber] = useState();
+ 
     const navigate = useNavigate();
 
 
     const hasBeenRenderedRef = useRef(false); //Used to determine if we've rendered it yet or not so that we don't have to run second useEffect at first render
 
     useEffect(() => {
-        //This useEffect is for determining if we've had our workersTables changed so that we can render our show and not worry about the index page having a lack of workers in it
+        //This useEffect is for determining if we've had our workersTables changed so that we can render our show and 
+        //not worry about the index page having a lack of workers in it
         if (hasBeenRenderedRef.current === true && Object.keys(errors).length === 0){
            navigate("/contact");
         }
@@ -75,7 +80,7 @@ const New = () => {
     }
     
     if (Object.keys(selectedWorker).length !== 0){
-        if (selectedWorker.admin === 1){
+        if (selectedWorker.admin === 1){//This needs to be changed to using the groups admin
             return(
                 <div className='form-container'>
                     <h1 className="form-title">Create a new Contact</h1>
@@ -83,13 +88,13 @@ const New = () => {
                         <div className='form-field-container'>
                             <div className="form-field">
                                 <label>
-                                    Company: <span className='red_asterisk'>*</span>
+                                    Company Name: <span className='red_asterisk'>*</span>
                                     <input type="text" defaultValue={customer.company} id="company" onChange={e => handleChange(e)}></input>
                                 </label>
                             </div>
                             <div className="form-field">
                                 <label>
-                                    Contact: <span className='red_asterisk'>*</span>
+                                    Contact Name: <span className='red_asterisk'>*</span>
                                     <input type="text" defaultValue={customer.contact_name} id="contact_name" onChange={e => handleChange(e)}></input>
                                 </label>
                             </div>
@@ -116,14 +121,14 @@ const New = () => {
                             </div>
                             <div className="form-field">
                                 <label>
-                                    Email: 
+                                    Email: <span className='red_asterisk'>*</span> 
                                     <input type="text" defaultValue={customer.email} id="email" onChange={e => handleChange(e)}></input>
                                 </label>
                             </div>
                         <div className="form-field">
                             <label>
-                                Number: 
-                                <input type="text" defaultValue={customer.number} id="number" onChange={e => handleChange(e)}></input>
+                                Number: <span className='red_asterisk'>*</span>
+                                <input type="tel" defaultValue={customer.number} id="number" onChange={e => handleChange(e)}></input>
                             </label>
                         </div>
                         <div className="form-field">

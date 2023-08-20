@@ -49,7 +49,7 @@ const Show = () => {
                     <h2 className='rendered-content__title'>WB Wood Owners</h2>
                     <div id="workers-list-div">
                         {selectedWorkers.map((worker, index) =>{
-                            return(<h3 className="rendered-content__content" key={worker + `${index}`}>{worker}</h3>)
+                            return(<h3 className="rendered-content__content" key={worker + `${index}`}>{worker.label}</h3>)
                         })}
                     </div>
                     

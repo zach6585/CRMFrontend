@@ -1,3 +1,5 @@
+//once we get groups working we can add this functionality back in
+
 import {useState, useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addWorkerToCustomer } from '../../actions/workercustomer.js';

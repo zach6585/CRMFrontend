@@ -47,7 +47,7 @@
 }
 
 /* Hover effect */
-.navbar a:hover {
+.navbar .nav-text:hover {
   background-color: #ddd;
 }
 

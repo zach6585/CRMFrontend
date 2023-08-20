@@ -4,13 +4,13 @@ import { useIsAuthenticated } from "@azure/msal-react";
 import { SignInButton } from "./SignInButton";
 import { SignOutButton } from "./SignOutButton";
 import { Link, Outlet } from 'react-router-dom';
-import { setCurrentWorker } from '../actions/worker';
+import { setCurrentWorker, getGroupList, setCurrentWorkerRole } from '../actions/worker';
 import { revertSearchedCustomers } from '../actions/customer.js';
 import { deleteErrors } from "../actions/error";
 import { useDispatch, useSelector } from 'react-redux';
 import { useMsal } from "@azure/msal-react";
-// import { loginRequest } from "../authConfig";
-// import { InteractionRequiredAuthError } from "@azure/msal-browser";
+import { loginRequest } from "../authConfig";
+import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,7 +39,8 @@ export const PageLayout = (props) => {
         //This is getting the userRole from the given token
         const role = getRoleFromToken(instance, accounts);
         setUserRole(role);
-    }, [instance, accounts]);
+        dispatch(setCurrentWorkerRole(role))
+    }, [instance, accounts, dispatch]);
 
 
 
@@ -64,6 +65,7 @@ export const PageLayout = (props) => {
 
     useEffect(() => {
         //This useEffect's purpose is to determine if the user with the username of the person signing in is valid
+        //This will be removed!!
         if (workers.workers.length !== 0 && accounts.length !== 0 && Object.keys(workers.current_worker).length === 0) {
             const findWorker = workers.workers.filter(worker => worker.email === accounts[0].username)
             if (findWorker.length !== 0) {
@@ -72,22 +74,22 @@ export const PageLayout = (props) => {
         }
     }, [accounts, workers, dispatch])
 
-    // useEffect(() => {
-    //     // Fetch access token so that we can get our group data. 
-    //     if (isAuthenticated && accounts.length > 0) {
-    //         instance.acquireTokenSilent({
-    //             ...loginRequest,
-    //             account: accounts[0]
-    //         }).then((response) => {
-    //             dispatch(getGroupList(response.accessToken))
-    //         }).catch(error => {
-    //             if (error instanceof InteractionRequiredAuthError) {
-    //                 // fallback to interaction when silent call fails
-    //                 instance.acquireTokenRedirect(loginRequest);
-    //             }
-    //         });
-    //     }
-    // }, [isAuthenticated, instance, accounts, dispatch]);
+    useEffect(() => {
+        // Fetch access token so that we can get our group data. 
+        if (isAuthenticated && accounts.length > 0) {
+            instance.acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0]
+            }).then((response) => {
+                dispatch(getGroupList(response.accessToken))
+            }).catch(error => {
+                if (error instanceof InteractionRequiredAuthError) {
+                    // fallback to interaction when silent call fails
+                    instance.acquireTokenRedirect(loginRequest);
+                }
+            });
+        }
+    }, [isAuthenticated, instance, accounts, dispatch]);
 
     const resetSearch = (e) => {
         dispatch(revertSearchedCustomers());
@@ -100,10 +102,10 @@ export const PageLayout = (props) => {
                     <div>
                         <Navbar >
                             <div className="app_header">
-                                <img src={logo} alt="Company Logo" id="wbw-logo" />
-                                <h3 onClick={e => resetSearch(e)}><Link to="contacts">View All Contacts</Link></h3>
-                                {userRole === 'CRM.Manage' && <h3 onClick={e => resetSearch(e)}><Link to="new_contact">Create a New Contact</Link></h3>}
-                                <h3 onClick={e => resetSearch(e)}><Link to="search">Search Contacts</Link></h3>
+                                <Link to="/"><img src={logo} alt="Company Logo" id="wbw-logo" /></Link>
+                                <h3 onClick={e => resetSearch(e)} className="nav-text"><Link to="contacts">View All Contacts</Link></h3>
+                                {userRole === 'CRM.Manage' && <h3 onClick={e => resetSearch(e)} className="nav-text"><Link to="new_contact">Create a New Contact</Link></h3>}
+                                <h3 onClick={e => resetSearch(e)} className="nav-text"><Link to="search">Search Contacts</Link></h3>
                                 <h3 id="sign_out_button"><SignOutButton /></h3>
                             </div>
                         </Navbar>

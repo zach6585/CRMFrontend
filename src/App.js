@@ -27,8 +27,8 @@ const App = () => {
 
       useEffect(() => {
         dispatch(getCustomers());
-        dispatch(getWorkers());
-        dispatch(getWorkerCustomers());
+        dispatch(getWorkers()); //We will have to change this
+        dispatch(getWorkerCustomers()); //We will have to change this
       }, [dispatch]);
 
     return(
