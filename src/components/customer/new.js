@@ -14,21 +14,21 @@ const New = () => {
             title: "",
             email: "",
             number: "",
-            old_address: "",
-            new_address: "",
-            category: "EU",
-            broker_company: "",
-            broker_name: "",
-            broker_number: "",
-            broker_email: "",
-            architect_company: "",
-            architect_name: "",
-            architect_number: "",
-            architect_email: "",
-            consultant_company: "",
-            consultant_name: "",
-            consultant_number: "",
-            consultant_email: ""
+            //old_address: "",
+            //new_address: "",
+            category: "",
+            //broker_company: "",
+            // broker_name: "",
+            //broker_number: "",
+            //broker_email: "",
+            //architect_company: "",
+            //architect_name: "",
+            //architect_number: "",
+            //architect_email: "",
+            //consultant_company: "",
+            //consultant_name: "",
+            //consultant_number: "",
+            //consultant_email: ""
         });
 
     const [selected, setSelected] = useState([]); //This determines what has and hasn't been selected yet with workers
@@ -78,7 +78,7 @@ const New = () => {
         if (selectedWorker.admin === 1) {
             return (
                 <div className='form-container'>
-                    <h1 className="form-title">Create a new Contact</h1>
+                    <h1 className="form-title">Create a New Contact</h1>
                     <form id="customer_form" onSubmit={handleSubmit}>
                         <div className='form-field-container'>
                             <div className="form-field">
