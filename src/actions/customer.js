@@ -12,7 +12,6 @@ export const getCustomers = () => dispatch => {
 
 export const createCustomer = (customer_information, selected_workers) => dispatch => {
   //Does exactly what it says it does
-  console.log(customer_information)
   axios.post("https://crmpilot0.azurewebsites.net/customers", {customer: customer_information, workers: selected_workers})
   .then(response => {
     dispatch({ type: 'CREATE_NEW_CUSTOMER', payload: {customer: response.data.customer[0], workers: selected_workers}}) 

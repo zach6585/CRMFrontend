@@ -96,16 +96,12 @@ const Index = () => {
         /* Route to page once redux saves the information */
     }
 
-    if (workerCustomers.worker_customers_succeeded === false || customers.customers_succeeded === false || workers.workers_succeeded === false ){
-        return <h1>Loading...</h1>
-    }
-    else{
-        return(
+    
+   return(
             <div className="index">
                 <Suspense fallback={<h1>Loading...</h1>}><Table columns={columns} data={dataMaker()} /></Suspense>
             </div>
         )
-    }
     
 }
 

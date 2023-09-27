@@ -73,10 +73,9 @@ const Search = () => {
                         Category: 
                         <select id="category"onChange={e => handleCategoryChange(e)} defaultValue={'Default'}>
                             <option value="Default"> -- no choice -- </option>
-                            <option value="EU">EU</option>
-                            <option value="REB">REB</option>
-                            <option value="A&D">A&D</option>
-                            <option value="PMfirm">PMfirm</option>
+                            <option value="REB">Real Estate Broker</option>
+                            <option value="A&D">Architect Designer</option>
+                            <option value="PMfirm">Project Management Firm</option>
                             <option value="Other">Other</option>
                         </select>
                     </label>

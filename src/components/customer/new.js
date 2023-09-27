@@ -6,9 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import '../components.scss';
 
-import 'react-phone-number-input/style.css';
-// import PhoneInput from 'react-phone-number-input'; //This is how we make the phone number thing look nice
-
 const New = () => {
     const [customer, setCustomer] = useState(
         {
@@ -19,19 +16,7 @@ const New = () => {
          number: "",
          old_address: "",
          new_address: "",
-         category: "EU",
-         broker_company: "",
-         broker_name: "",
-         broker_number: "",
-         broker_email: "",
-         architect_company: "",
-         architect_name: "",
-         architect_number: "",
-         architect_email: "",
-         consultant_company: "",
-         consultant_name: "",
-         consultant_number: "",
-         consultant_email: ""
+         category: "REB",
         });
 
     const [selected, setSelected] = useState([]); //This determines what has and hasn't been selected yet with workers
@@ -41,9 +26,8 @@ const New = () => {
     const errors = useSelector((state) => state.errors.error);
     const customers = useSelector((state) => state.customers.customers); //We add this purely so the useEffect where we navigate will be called when a new customer is made!
     const selectedWorker = useSelector((state) => state.workers.current_worker); //We will be using this to determine if the user has a right to access this page
+        
 
-    // const [phoneNumber, setPhoneNumber] = useState();
- 
     const navigate = useNavigate();
 
 
@@ -128,32 +112,19 @@ const New = () => {
                         <div className="form-field">
                             <label>
                                 Number: <span className='red_asterisk'>*</span>
-                                <input type="tel" defaultValue={customer.number} id="number" onChange={e => handleChange(e)}></input>
-                            </label>
-                        </div>
-                        <div className="form-field">
-                            <label>
-                                Old Address: 
-                                <input type="text" defaultValue={customer.old_address} id="old_address" onChange={e => handleChange(e)}></input>
+                                <input type="text" defaultValue={customer.number} id="number" onChange={e => handleChange(e)}></input>
                             </label>
                         </div>
                         
-                        <div className="form-field">
-                            <label>
-                                New Address: 
-                                <input type="text" defaultValue={customer.new_address} id="new_address" onChange={e => handleChange(e)}></input>
-                            </label>
-                        </div>
-                       
+                    
                         <div className="form-field">
                             <label>
                                 Category: 
                                 <div className="custom-select">
                                     <select id="category" onChange={e => handleChange(e)}>
-                                        <option value="EU">EU</option>
-                                        <option value="REB">REB</option>
-                                        <option value="A&D">A&D</option>
-                                        <option value="PMfirm">PMfirm</option>
+                                        <option value="REB">Real Estate Broker</option>
+                                        <option value="A&D">Architect Designer</option>
+                                        <option value="PMfirm">Project Management Firm</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
@@ -162,91 +133,7 @@ const New = () => {
                         </div>
                         </div>
 
-                        <div className='form-field-container'>
-                            <div className="form-field">
-                                <label>
-                                    Broker Company: 
-                                    <input type="text" defaultValue={customer.broker_company} id="broker_company" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            
-                            <div className="form-field">
-                                <label>
-                                    Broker Name: 
-                                    <input type="text" defaultValue={customer.broker_name} id="broker_name" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            
-                            <div className="form-field">
-                                <label>
-                                    Broker Number: 
-                                    <input type="text" defaultValue={customer.broker_number} id="broker_number" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            
-                            <div className="form-field">
-                                <label>
-                                    Broker Email: 
-                                    <input type="text" defaultValue={customer.broker_email} id="broker_email" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                        
-                        </div>
-                        
-                        <div className='form-field-container'>
-                            <div className="form-field">
-                                <label>
-                                    Architect Company: 
-                                    <input type="text" defaultValue={customer.architect_company} id="architect_company" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            <div className="form-field">
-                                <label>
-                                    Architect Name: 
-                                    <input type="text" defaultValue={customer.architect_name} id="architect_name" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            <div className="form-field">
-                                <label>
-                                    Architect Number: 
-                                    <input type="text" defaultValue={customer.architect_number} id="architect_number" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            <div className="form-field">
-                                <label>
-                                    Architect Email: 
-                                    <input type="text" defaultValue={customer.architect_email} id="architect_email" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className='form-field-container'>
-                            <div className="form-field">
-                                <label>
-                                    Consultant Company: 
-                                    <input type="text" defaultValue={customer.consultant_company} id="consultant_company" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-
-                            <div className="form-field">
-                                <label>
-                                    Consultant Name: 
-                                    <input type="text" defaultValue={customer.consultant_name} id="consultant_name" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            <div className="form-field">
-                                <label>
-                                    Consultant Number: 
-                                    <input type="text" defaultValue={customer.consultant_number} id="consultant_number" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                            <div className="form-field">
-                                <label>
-                                    Consultant Email: 
-                                    <input type="text" defaultValue={customer.consultant_email} id="consultant_email" onChange={e => handleChange(e)}></input>
-                                </label>
-                            </div>
-                        </div>
+                      
                     <button type="submit" onClick={e => handleSubmit(e)} className="submit_new_button form-button">Submit</button>
                     </form>
                 </div>
